@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#031312">
+<title>100Key Stream — Compartilhamento privado</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/style.css">
+<script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+<div class="ambient"></div>
+<header class="topbar">
+  <a class="brand" href="/"><span class="brand-mark">100</span><span>KEY<span class="brand-light">STREAM</span></span></a>
+  <div class="top-right"><span class="secure"><i></i> CONEXÃO PRIVADA</span><span class="version">BETA 1.0</span></div>
+</header>
+<main id="app">
+  <section class="hero" id="home">
+    <div class="eyebrow"><span class="pulse"></span> SUA TELA. SEU ESPAÇO. 100KEY.</div>
+    <h1>Compartilhe sem<br><em>limites.</em></h1>
+    <p class="lead">Crie uma sala privada e transmita sua tela em tempo real.<br>Simples, rápido e com a identidade 100Key.</p>
+    <div class="actions">
+      <button class="btn btn-primary" id="createRoom"><span>＋</span> Criar transmissão</button>
+      <button class="btn btn-ghost" id="showJoin">Entrar em uma sala <span>↗</span></button>
+    </div>
+    <div class="join-panel hidden" id="joinPanel">
+      <input id="roomInput" placeholder="Cole o código ou link da sala" autocomplete="off">
+      <button class="btn btn-primary" id="joinRoom">Entrar <span>→</span></button>
+    </div>
+    <div class="features">
+      <div><b>01</b><span>Salas privadas</span></div><div><b>02</b><span>Compartilhamento em tempo real</span></div><div><b>03</b><span>Link fácil de enviar</span></div>
+    </div>
+  </section>
+
+  <section class="stage hidden" id="hostStage">
+    <div class="stage-head"><div><div class="eyebrow"><span class="pulse"></span> PAINEL DO TRANSMISSOR</div><h2>Sua transmissão</h2></div><span class="live-pill" id="hostStatus">● AGUARDANDO</span></div>
+    <div class="room-card"><div><small>SUA SALA</small><strong id="hostRoomCode">—</strong><small id="hostPasswordLabel">SENHA: SEM SENHA</small></div><button class="btn btn-small" id="copyLink">Copiar link <span>↗</span></button></div>
+    <div class="admin-strip"><div><b>PAINEL DA SALA</b><span id="viewerCount">0 espectadores conectados</span></div><div class="viewer-list" id="viewerList">Aguardando espectadores...</div></div>
+    <div class="control-row"><label>Qualidade da transmissão<select id="quality"><option value="720">HD 720p</option><option value="1080" selected>Full HD 1080p</option><option value="1440">QHD 1440p</option></select></label></div>
+    <div class="video-wrap host-video-wrap"><video id="hostPreview" autoplay muted playsinline></video><div class="video-placeholder" id="hostPlaceholder"><div class="screen-icon">▣</div><b>Sua tela aparecerá aqui</b><span>Inicie a transmissão para compartilhar com quem tiver o link.</span></div></div>
+    <div class="stage-actions"><button class="btn btn-primary" id="startShare">▣ Iniciar compartilhamento</button><button class="btn btn-danger hidden" id="stopShare">Parar transmissão</button><button class="btn btn-ghost" id="backHome">Voltar ao início</button></div>
+    <div class="chat-panel"><div class="chat-title">CHAT DA TRANSMISSÃO</div><div class="chat-messages" id="hostChat"></div><form class="chat-send" id="hostChatForm"><input id="hostChatInput" maxlength="400" placeholder="Enviar mensagem para a sala..."><button class="btn btn-small">Enviar</button></form></div>
+    <p class="hint">Dica: escolha uma janela, guia ou a tela inteira na janela do navegador.</p>
+  </section>
+
+  <section class="stage hidden" id="viewerStage">
+    <div class="stage-head"><div><div class="eyebrow"><span class="pulse"></span> MODO ESPECTADOR</div><h2>Assistindo transmissão</h2></div><span class="live-pill" id="viewerStatus">● CONECTANDO</span></div>
+    <div class="room-card"><div><small>SALA</small><strong id="viewerRoomCode">—</strong></div><span class="viewer-lock">⌑ ACESSO PRIVADO</span></div>
+    <div class="join-credentials" id="viewerCredentials"><input id="viewerName" maxlength="24" placeholder="Seu nome (opcional)"><input id="viewerPassword" type="password" placeholder="Senha da sala (se houver)"><button class="btn btn-primary" id="viewerConnect">Conectar</button></div>
+    <div class="video-wrap viewer-video-wrap"><video id="viewerVideo" autoplay playsinline controls></video><div class="video-placeholder" id="viewerPlaceholder"><div class="loader"></div><b>Aguardando o transmissor</b><span>A imagem aparecerá assim que o compartilhamento começar.</span></div></div>
+    <div class="stage-actions"><button class="btn btn-ghost" id="fullscreen">⛶ Tela cheia</button><button class="btn btn-ghost" id="leaveRoom">Sair da sala</button></div>
+    <div class="chat-panel"><div class="chat-title">CHAT DA TRANSMISSÃO</div><div class="chat-messages" id="viewerChat"></div><form class="chat-send" id="viewerChatForm"><input id="viewerChatInput" maxlength="400" placeholder="Enviar mensagem para a sala..."><button class="btn btn-small">Enviar</button></form></div>
+  </section>
+  <div class="toast" id="toast"></div>
+</main>
+<footer><span>© 2026 100KEY STREAM</span><span>FEITO PARA CONECTAR.</span></footer>
+<script src="/app.js"></script>
+</body></html>

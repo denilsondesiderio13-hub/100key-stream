@@ -1,0 +1,9 @@
+{
+  "name": "100key-stream",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Plataforma privada de compartilhamento de tela 100Key",
+  "main": "server.js",
+  "scripts": { "start": "node server.js", "dev": "node server.js" },
+  "dependencies": { "express": "^4.21.2", "socket.io": "^4.8.1" }
+}
